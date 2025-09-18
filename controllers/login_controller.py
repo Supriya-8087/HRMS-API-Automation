@@ -9,11 +9,11 @@ class LoginController:
             "Content-Type": "application/json"
         })
 
-    def login(self):
+    def login(self,username=None, password=None):
         """Performs login and returns full response"""
         payload = {
-            "username": Env.USERNAME(),
-            "password": Env.PASSWORD()
+            "username": username or Env.USERNAME(),
+            "password": password or Env.PASSWORD()
         }
         response = self.session.post(
             f"{Env.BASE_URL()}{Endpoints.LOGIN}",
@@ -32,3 +32,21 @@ class LoginController:
         if not token:
             raise Exception("authToken not found in response")
         return token
+
+    def login_invalid_username(self):
+        return self.login(username="abc@gmail.com", password=Env.PASSWORD())
+
+    def login_invalid_password(self):
+        return self.login(username=Env.USERNAME(), password="wrong_pass")
+
+    def login_missing_username(self):
+        return self.session.post(f"{Env.BASE_URL()}{Endpoints.LOGIN}", json={"password": Env.PASSWORD()})
+
+    def login_missing_password(self):
+        return self.session.post(f"{Env.BASE_URL()}{Endpoints.LOGIN}", json={"username": Env.USERNAME()})
+
+    def login_empty_payload(self):
+        return self.session.post(f"{Env.BASE_URL()}{Endpoints.LOGIN}", json={})
+
+    def login_sql_injection(self):
+        return self.login(username="' OR 1=1 --", password="anything")
