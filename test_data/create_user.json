@@ -1,0 +1,12 @@
+{
+  "valid_user_id": "68d0f1a7dff3a925158a3e89",
+  "deleted_user_id": "68d0d5da88c876179efb53af",
+  "invalid_user_id": "12345",
+  "invalid_email": "supriya.mgmail.com",
+  "invalid_phone": "12345",
+  "update_user_data": {
+    "status": "active",
+    "role": "Recruiter",
+    "fName": "John"
+  }
+}

@@ -1,10 +1,7 @@
 class Endpoints:
     # User-related
     LOGIN = "/userService/user/login"
-    # LOGOUT = "/userService/user/logout"
-
-    # # Department-related
-    # ADD_DEPARTMENT = "/userService/department/add"
-    # GET_DEPARTMENT = "/userService/department/get"
-    # UPDATE_DEPARTMENT = "/userService/department/update"
-    # DELETE_DEPARTMENT = "/userService/department/delete"
+    CREATE_USER="/userService/user/register"
+    DELETE_USER="/userService/user/delete"
+    GET_USERS = "/userService/user/list"
+    UPDATE_USER = "/userService/user/update"
