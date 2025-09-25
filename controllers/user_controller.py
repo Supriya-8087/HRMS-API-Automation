@@ -29,8 +29,8 @@ class UserController:
         dept_id = self.db.get_department_id()
         role_id = self.db.get_role_id()
         manager_ids = self.db.get_user_id_by_department("Testing")
+        #choose single id that's why use random.choice function here 
         manager_id = random.choice(manager_ids) if manager_ids else None
-        print(manager_id)
         # manager_id = DBHelper.get_reporting_manager("Testing")
 
         return {

@@ -1,4 +1,4 @@
-from config.db_config import DBClient
+from utils.db_config import DBClient
 from bson import ObjectId
 
 

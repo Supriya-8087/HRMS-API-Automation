@@ -33,6 +33,9 @@ class LoginController:
             raise Exception("authToken not found in response")
         return token
 
+    def login_valid_data(self):
+        return self.login(username=Env.USERNAME, password=Env.PASSWORD)
+    
     def login_invalid_username(self):
         return self.login(username="abc@gmail.com", password=Env.PASSWORD())
 

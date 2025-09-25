@@ -1,6 +1,11 @@
 import pytest
 from controllers.user_controller import UserController
 from controllers.login_controller import LoginController
+import json
+
+# read data from json file for test data instead using hardcoaded 
+with open("test_data/user_data.json") as f:
+    test_data = json.load(f)
 
 token = LoginController().get_token()
 user_controller = UserController(token)
@@ -23,29 +28,29 @@ def test_create_user_with_empty_fields():
 
 def test_create_user_with_invalid_email():
     # Invalid format (missing @)
-    response = user_controller.create_user(email="supriya.mgmail.com")
+    response = user_controller.create_user(email=test_data["invalid_email"])
     assert response.status_code == 400
 
 
 def test_create_user_with_invalid_phone():
     # Invalid password (too short)
-    response = user_controller.create_user(phone="12345")
+    response = user_controller.create_user(phone=test_data["invalid_phone"])
     # print(response)
     assert response.status_code == 400
 
 
 def test_delete_user_with_invalid_id():
-    response = user_controller.delete_user(userId="12345")
+    response = user_controller.delete_user(userId=test_data["invalid_user_id"])
     # print(response)
     assert response.status_code in [400,404]
 
 def test_delete_user_with_valid_id():
-    response = user_controller.delete_user(userId="68d0f1a7dff3a925158a3e89")  # use valid id
+    response = user_controller.delete_user(userId=test_data["valid_user_id"])  # use valid id
     # print(response.status_code, response.json())
     assert response.status_code == 200
 
 def test_delete_already_deleted_user():
-    response = user_controller.delete_user(userId="68d0d5da88c876179efb53af")  # use valid id
+    response = user_controller.delete_user(userId=test_data["deleted_user_id"])  # use valid id
     # print(response.status_code, response.json())
     assert response.status_code == 400
 
@@ -57,28 +62,26 @@ def test_get_all_users():
 
 def test_update_existing_user_status_to_inactive():
     # Use an already existing userId from DB or API
-    existing_user_id = "68d0f1a7dff3a925158a3e89"  
-    update_response = user_controller.update_user_status(existing_user_id, "inactive")
+     
+    update_response = user_controller.update_user_status(userId= test_data["existing_user_id"],status= "inactive")
     print("Response:", update_response.status_code, update_response.json())
     assert update_response.status_code == 200
 
 def test_update_existing_user_role():
-    exe_user_id = "68d0f1a7dff3a925158a3e89"
-    updates ={"status": "active", "role": "Recruiter", "fName": "John"}
-    update_response = user_controller.update_user(userId= exe_user_id, updates=updates)
+    update_response = user_controller.update_user(userId= test_data["existing_user_id"], updates=test_data["update_user_data"])
     print(update_response.json())
     assert update_response.status_code == 200
 
 def test_update_user_manager():
-    # Existing userId from DB or API
-    existing_user_id = "68d0f1a7dff3a925158a3e89"  # replace with a real userId
-
+    # Existing userId from DB or API 
     # Call the controller to update manager
-    update_response = user_controller.update_user_manager(userId=existing_user_id)
+    # values taking from json file
+    update_response = user_controller.update_user_manager(userId= test_data["existing_user_id"])
     print("Response:", update_response.status_code, update_response.json())
 
     # Assertions
     assert update_response.status_code == 200
+    
     # Check if manager field is present in response
     
 

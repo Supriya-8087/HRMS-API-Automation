@@ -1,8 +1,10 @@
 import pytest
 from controllers.login_controller import LoginController
-from config.db_config import DBClient
+from utils.db_config import DBClient
 import json
 
+with open("test_data/login_data.json") as f:
+    test_data = json.load(f)
 login = LoginController()
 
 @pytest.mark.smoke
